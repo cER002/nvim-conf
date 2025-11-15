@@ -14,7 +14,7 @@ opt.termguicolors = true -- enable 24-bit colors
 opt.guifont = "NotoSansM Nerd Font Mono" -- GUI font
 opt.fillchars:append({ eob = " " }) -- hide ~ on empty lines
 opt.clipboard = "unnamedplus" -- use system clipboard
-opt.splitbelow = true
+opt.splitbelow = true -- horiz splits go below
 
 -- Indentation -----------------------------------------------------------------
 opt.smartindent = true -- smart autoindenting on new lines
@@ -31,7 +31,7 @@ opt.hlsearch = false -- don’t highlight search results
 opt.incsearch = true
 opt.ignorecase = true
 opt.smartcase = true
-opt.whichwrap:append("<>[]hl")
+opt.whichwrap:append("<>[]hl") -- line wrap on hjkl and arrow keys
 opt.completeopt = "menu,menuone,noselect"
 opt.undodir = os.getenv("HOME") .. "/.nvim/undodir"
 -- Providers -------------------------------------------------------------------
