@@ -26,17 +26,19 @@ opt.expandtab = true -- convert tabs to spaces
 -- Behavior --------------------------------------------------------------------
 opt.wrap = false -- disable line wrapping
 opt.scrolloff = 8 -- keep 8 lines visible above/below cursor
-opt.sidescrolloff = 8
+opt.sidescrolloff = 8 -- same thing but for right and left
 opt.hlsearch = false -- don’t highlight search results
 opt.incsearch = true
-opt.ignorecase = true
-opt.smartcase = true
+opt.ignorecase = true -- ignores... case
+opt.smartcase = true -- better search
 opt.whichwrap:append("<>[]hl") -- line wrap on hjkl and arrow keys
 opt.completeopt = "menu,menuone,noselect"
 opt.undofile = true -- actually activate persistent undo file
-opt.undodir = os.getenv("HOME") .. "/.nvim/undodir"
+opt.undodir = vim.fn.stdpath("data") .. "/undo" -- keep them in here
+
 -- Providers -------------------------------------------------------------------
 g.loaded_node_provider = 0
 g.loaded_python3_provider = 0
 g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
+-- disable them cause i dont need them
