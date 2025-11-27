@@ -9,6 +9,8 @@ return {
 				java = { "google_java_format" },
 				python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
 				bash = { "beautysh" },
+				json = { "prettier" },
+				jsonc = { "prettier" },
 			},
 			formatters = {
 				google_java_format = {
