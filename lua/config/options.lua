@@ -33,6 +33,7 @@ opt.ignorecase = true
 opt.smartcase = true
 opt.whichwrap:append("<>[]hl") -- line wrap on hjkl and arrow keys
 opt.completeopt = "menu,menuone,noselect"
+opt.undofile = true -- actually activate persistent undo file
 opt.undodir = os.getenv("HOME") .. "/.nvim/undodir"
 -- Providers -------------------------------------------------------------------
 g.loaded_node_provider = 0
