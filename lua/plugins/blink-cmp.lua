@@ -5,7 +5,6 @@ return {
 		dependencies = {
 			"rafamadriz/friendly-snippets",
 			"fang2hou/blink-copilot",
-			"Exafunction/codeium.nvim",
 			{ "L3MON4D3/LuaSnip", version = "v2.*" },
 		},
 		build = "cargo build --release",
