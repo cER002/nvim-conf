@@ -3,7 +3,7 @@ local opt = vim.opt
 local g = vim.g
 
 -- Leader ----------------------------------------------------------------------
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
 
 -- UI --------------------------------------------------------------------------
 opt.number = true -- show absolute line numbers
@@ -11,9 +11,9 @@ opt.relativenumber = true -- show relative line numbers
 opt.cursorline = true -- highlight the current line
 opt.ruler = false -- disable the old-school ruler
 opt.termguicolors = true -- enable 24-bit colors
-opt.guifont = "NotoSansM Nerd Font Mono" -- GUI font
-opt.fillchars:append({ eob = " " }) -- hide ~ on empty lines
-opt.clipboard = "unnamedplus" -- use system clipboard
+opt.guifont = 'NotoSansM Nerd Font Mono' -- GUI font
+opt.fillchars:append { eob = ' ' } -- hide ~ on empty lines
+opt.clipboard = 'unnamedplus' -- use system clipboard
 opt.splitbelow = true -- horiz splits go below
 
 -- Indentation -----------------------------------------------------------------
@@ -31,10 +31,10 @@ opt.hlsearch = false -- don’t highlight search results
 opt.incsearch = true
 opt.ignorecase = true -- ignores... case
 opt.smartcase = true -- better search
-opt.whichwrap:append("<>[]hl") -- line wrap on hjkl and arrow keys
-opt.completeopt = "menu,menuone,noselect"
+opt.whichwrap:append('<>[]hl') -- line wrap on hjkl and arrow keys
+opt.completeopt = 'menu,menuone,noselect'
 opt.undofile = true -- actually activate persistent undo file
-opt.undodir = vim.fn.stdpath("data") .. "/undo" -- keep them in here
+opt.undodir = vim.fn.stdpath('data') .. '/undo' -- keep them in here
 
 -- Providers -------------------------------------------------------------------
 g.loaded_node_provider = 0
