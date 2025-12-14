@@ -6,22 +6,21 @@ function M:setup()
   local home = os.getenv('HOME')
 
   -- --- Project-specific workspace ---
-  local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-  local workspace_dir = home .. '/.local/share/jdtls-eclipse/' .. project_name
+  local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t') -- get currently open file in shell (etc. /where/you/are returns "are")
+  local workspace_dir = home .. '/.local/share/jdtls-eclipse/' .. project_name -- jdtls will use this to index your project
 
   -- --- OS-specific and Mason path helpers ---
-  local os_name = vim.loop.os_uname().sysname
-  local path_sep = package.config:sub(1, 1) -- Gets / or \
-  local jdtls_dir = vim.fn.stdpath('data') .. path_sep .. 'mason' .. path_sep .. 'packages' .. path_sep .. 'jdtls'
-  local mason_packages = vim.fn.stdpath('data') .. path_sep .. 'mason' .. path_sep .. 'packages'
+  local os_name = vim.loop.os_uname().sysname -- get OS name
+  local jdtls_dir = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'packages', 'jdtls')
+  local mason_packages = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'packages')
 
   -- --- 1. Dynamically find the launcher jar ---
-  local launcher_glob = jdtls_dir .. path_sep .. 'plugins' .. path_sep .. 'org.eclipse.equinox.launcher_*.jar'
-  local launcher_jar = vim.fn.split(vim.fn.glob(launcher_glob), '\n')[1]
+  local launcher_pattern = vim.fs.joinpath(jdtls_dir, 'plugins', 'org.eclipse.equinox.launcher_*.jar')
+  local launcher_jar = vim.fn.glob(launcher_pattern, true, true)[1]
 
-  -- Safety check
+  -- Check if launcher jar was found properly
   if not launcher_jar or launcher_jar == '' then
-    vim.notify('Could not find jdtls launcher jar at: ' .. launcher_glob, vim.log.levels.ERROR)
+    vim.notify('Could not find jdtls launcher jar with pattern: ' .. launcher_pattern, vim.log.levels.ERROR)
     return
   end
 
@@ -31,33 +30,31 @@ function M:setup()
     Darwin = 'mac',
   }
 
+  local key = os_lookup[os_name]
+
+  if not key then
+    vim.notify('Unregistered OS' .. tostring(os_name) .. '. JDTLS startup interrupted.', vim.log.levels.ERROR)
+    return
+  end
+
   -- --- 2. Dynamically find the configuration directory ---
-  local config_dir_name = 'config_' .. os_lookup[os_name]
-  local config_dir = jdtls_dir .. path_sep .. config_dir_name
+  local config_dir_name = 'config_' .. key
+  local config_dir = vim.fs.joinpath(jdtls_dir, config_dir_name)
 
   -- --- 3. Find DAP/Test Jars ---
   -- These are installed by mason-nvim-dap
-  local debug_glob = mason_packages
-    .. path_sep
-    .. 'java-debug-adapter'
-    .. path_sep
-    .. 'extension'
-    .. path_sep
-    .. 'server'
-    .. path_sep
-    .. 'com.microsoft.java.debug.plugin-*.jar'
-  local test_glob = mason_packages
-    .. path_sep
-    .. 'java-test'
-    .. path_sep
-    .. 'extension'
-    .. path_sep
-    .. 'server'
-    .. path_sep
-    .. 'com.microsoft.java.test.plugin-*.jar'
+  local debug_glob = vim.fs.joinpath(
+    mason_packages,
+    'java-debug-adapter',
+    'extension',
+    'server',
+    'com.microsoft.java.debug.plugin-*.jar'
+  )
+  local test_glob =
+    vim.fs.joinpath(mason_packages, 'java-test', 'extension', 'server', 'com.microsoft.java.test.plugin-*.jar')
 
-  local java_debug_jar = vim.fn.split(vim.fn.glob(debug_glob), '\n')[1]
-  local java_test_jar = vim.fn.split(vim.fn.glob(test_glob), '\n')[1]
+  local java_debug_jar = vim.fn.glob(debug_glob, true, true)[1]
+  local java_test_jar = vim.fn.glob(test_glob, true, true)[1]
 
   local bundles = {}
   if java_debug_jar then table.insert(bundles, java_debug_jar) end
