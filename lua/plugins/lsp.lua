@@ -52,8 +52,10 @@ return {
   {
     'folke/lazydev.nvim',
     ft = 'lua',
-    library = {
-      { path = '${3rd}/luv/library', words = { 'vim%.uv' }, { 'nvim-dap-ui' } },
+    opts = {
+      library = {
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      },
     },
   },
   {
