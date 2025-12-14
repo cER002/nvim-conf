@@ -25,8 +25,14 @@ function M:setup()
     return
   end
 
+  local os_lookup = {
+    Windows_NT = 'win',
+    Linux = 'linux',
+    Darwin = 'mac',
+  }
+
   -- --- 2. Dynamically find the configuration directory ---
-  local config_dir_name = 'config_' .. (os_name == 'Windows_NT' and 'win' or os_name == 'Linux' and 'linux' or 'mac')
+  local config_dir_name = 'config_' .. os_lookup[os_name]
   local config_dir = jdtls_dir .. path_sep .. config_dir_name
 
   -- --- 3. Find DAP/Test Jars ---
