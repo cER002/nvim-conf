@@ -1,7 +1,7 @@
 local M = {}
 
 -- See `:help vim.lsp.start` for an overview of the supported `config` options.
-function M:setup()
+function M.setup()
   local jdtls = require('jdtls')
   local home = os.getenv('HOME')
 
@@ -10,7 +10,7 @@ function M:setup()
   local workspace_dir = home .. '/.local/share/jdtls-eclipse/' .. project_name -- jdtls will use this to index your project
 
   -- --- OS-specific and Mason path helpers ---
-  local os_name = vim.loop.os_uname().sysname -- get OS name
+  local os_name = vim.uv.os_uname().sysname -- get OS name
   local jdtls_dir = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'packages', 'jdtls')
   local mason_packages = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'packages')
 
