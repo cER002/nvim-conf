@@ -3,14 +3,13 @@ return {
   -- dependencies = { 'echasnovski/mini.icons' },
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
-    local alpha = require 'alpha'
-    local dashboard = require 'alpha.themes.dashboard'
+    local alpha = require('alpha')
+    local dashboard = require('alpha.themes.dashboard')
     local v = vim.version()
     local version = ' v' .. v.major .. '.' .. v.minor .. '.' .. v.patch
     -- available: devicons, mini, default is mini
     -- if provider not loaded and enabled is true, it will try to use another provider
     dashboard.section.header.val = {
-      [[                                                                         ]],
       [[                *              ____yyyyy___              +       .       ]],
       [[      o                    _y~`            `~~__                         ]],
       [[                        _~~                     ~y_                      ]],
@@ -58,7 +57,7 @@ return {
 
     alpha.setup(dashboard.opts)
 
-    vim.cmd [[autocmd FileType alpha setlocal nofoldenable]]
-    vim.cmd [[autocmd FileType alpha set laststatus=0 | autocmd BufUnload <buffer> set laststatus=2]]
+    vim.cmd([[autocmd FileType alpha setlocal nofoldenable]])
+    vim.cmd([[autocmd FileType alpha set laststatus=0 | autocmd BufUnload <buffer> set laststatus=2]])
   end,
 }

@@ -25,7 +25,7 @@ return {
       concealcursor = 'nvic',
     },
 
-    delete_to_trash = false,
+    delete_to_trash = true,
     skip_confirm_for_simple_edits = false,
     prompt_save_on_select_new_entry = true,
     cleanup_delay_ms = 2000,
@@ -47,7 +47,7 @@ return {
       ['<C-h>'] = { 'actions.select', opts = { horizontal = true } },
       ['<C-t>'] = { 'actions.select', opts = { tab = true } },
       ['<C-p>'] = 'actions.preview',
-      ['<C-c>'] = { 'actions.close', mode = 'n' }, -- close oil
+      ['q'] = { 'actions.close', mode = 'n' }, -- close oil
       ['<F5>'] = 'actions.refresh',
       ['-'] = { 'actions.parent', mode = 'n' }, -- to parent dir
       ['_'] = { 'actions.open_cwd', mode = 'n' },
@@ -61,7 +61,7 @@ return {
 
     view_options = {
       show_hidden = true,
-      is_hidden_file = function(name, bufnr) return name:match '^%.' ~= nil end,
+      is_hidden_file = function(name, bufnr) return name:match('^%.') ~= nil end,
       is_always_hidden = function(name, bufnr) return false end,
       natural_order = 'fast',
       case_insensitive = false,

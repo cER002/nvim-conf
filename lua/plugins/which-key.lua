@@ -3,7 +3,7 @@ return {
   event = 'VeryLazy',
   opts = {
     spec = {
-      { 'gr', desc = 'LSP references', mode = 'n' },
+      { 'gR', desc = 'LSP references', mode = 'n' },
       { 'gd', desc = 'LSP definitions', mode = 'n' },
       { 'gh', desc = 'Hover information', mode = 'n' },
       { 'gi', desc = 'LSP implementations', mode = 'n' },

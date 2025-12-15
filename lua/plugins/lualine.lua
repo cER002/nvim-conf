@@ -2,9 +2,8 @@ return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   opts = {
-    theme = 'tokyonight',
     sections = {
-      lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
+      lualine_a = { { 'mode', right_padding = 2 } },
       lualine_b = { 'branch' },
       lualine_c = {
         {
@@ -17,11 +16,12 @@ return {
           end,
         },
       },
-      lualine_x = { 'location' },
+      lualine_x = { 'diagnostics', 'diff', 'location' },
       lualine_y = { { 'lsp_status', ignore_lsp = { 'Github Copilot', 'copilot' } } },
-      lualine_z = { { 'filetype', separator = { right = '' }, left_padding = 2 } },
+      lualine_z = { { 'filetype', left_padding = 2 } },
     },
     options = {
+      theme = require('config.themes').lualine,
       icons_enabled = true,
       globalstatus = true,
       component_separators = { left = '|', right = '|' },
