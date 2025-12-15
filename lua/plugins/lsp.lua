@@ -25,6 +25,7 @@ return {
         'rust_analyzer',
         'hyprls',
         'bash-language-server',
+        'json-lsp',
       },
       automatic_enable = {
         exclude = {

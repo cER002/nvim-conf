@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- format on save
+-- format on save, conform.nvim must be loaded before
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
   callback = function(args) require('conform').format { bufnr = args.buf } end,
