@@ -1,4 +1,8 @@
-vim.lsp.config('ruff', {})
+vim.lsp.config('ruff', {
+  -- init_options = {
+  --   settings = {},
+  -- },
+})
 
 -- disable stuff for ruff
 vim.lsp.config('basedpyright', {
@@ -7,16 +11,12 @@ vim.lsp.config('basedpyright', {
       autoImportCompletions = true,
       disableOrganizeImports = true,
       analysis = {
-        typeCheckingMode = 'off',
-        ignore = { '*' },
+        typeCheckingMode = 'standard',
         diagnosticSeverityOverrides = {
           reportUnusedImport = 'none',
           reportUnusedVariable = 'none',
           reportUnusedFunction = 'none',
         },
-      },
-      python = {
-        pythonPath = '.venv/bin/python', -- deafult setting
       },
     },
   },

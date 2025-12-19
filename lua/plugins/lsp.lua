@@ -17,6 +17,8 @@ return {
     dependencies = { 'mason-org/mason.nvim', 'neovim/nvim-lspconfig' },
     opts = {
       ensure_installed = {
+        'clangd',
+        'arduino-language-server',
         'pyright',
         'ruff',
         'jdtls',

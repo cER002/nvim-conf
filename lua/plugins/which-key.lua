@@ -11,6 +11,8 @@ return {
       { 'gs', desc = 'LSP workspace symbols', mode = 'n' },
       { '<F2>', desc = 'LSP buffer rename', mode = 'n' },
       { '<F4>', desc = 'LSP buffer code action', mode = 'n' },
+      { '<leader>jtc', desc = 'JDTLS test class', mode = 'n' },
+      { '<leader>jtm', desc = 'JDTLS test nearest method', mode = 'n' },
     },
     plugins = {
       marks = true,

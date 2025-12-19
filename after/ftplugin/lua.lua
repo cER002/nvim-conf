@@ -1,5 +1,6 @@
 vim.lsp.config('stylua', {})
 
+-- lazydev plugin configures it already actually
 vim.lsp.config('lua_ls', {
   settings = {
     Lua = {

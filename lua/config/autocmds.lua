@@ -16,8 +16,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- format on save, conform.nvim must be loaded before
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
+-- formatting on write, conform.nvim must be loaded before
+local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+  group = lint_augroup,
   callback = function(args) require('conform').format { bufnr = args.buf } end,
 })

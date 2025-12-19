@@ -6,7 +6,7 @@ return {
     local alpha = require('alpha')
     local dashboard = require('alpha.themes.dashboard')
     local v = vim.version()
-    local version = ' v' .. v.major .. '.' .. v.minor .. '.' .. v.patch
+    local version = 'v' .. v.major .. '.' .. v.minor .. '.' .. v.patch
     -- available: devicons, mini, default is mini
     -- if provider not loaded and enabled is true, it will try to use another provider
     dashboard.section.header.val = {

@@ -18,7 +18,7 @@ return {
       },
       lualine_x = { 'diagnostics', 'diff', 'location' },
       lualine_y = { { 'lsp_status', ignore_lsp = { 'Github Copilot', 'copilot' } } },
-      lualine_z = { { 'filetype', left_padding = 2 } },
+      lualine_z = { 'encoding', { 'filetype', left_padding = 2 } },
     },
     options = {
       theme = require('config.themes').lualine,

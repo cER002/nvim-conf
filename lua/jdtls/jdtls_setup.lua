@@ -2,11 +2,18 @@ local M = {}
 
 -- See `:help vim.lsp.start` for an overview of the supported `config` options.
 function M.setup()
-  local jdtls = require('jdtls')
+  local jdtls_ok, jdtls = pcall(require, 'jdtls')
+  if not jdtls_ok then vim.notify('JDTLS not found', vim.log.levels.ERROR) end
+
   local home = os.getenv('HOME')
 
   -- --- Project-specific workspace ---
-  local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t') -- get currently open file in shell (etc. /where/you/are returns "are")
+  -- get the root dir for the buffer
+  local root_markers = { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }
+  local root_dir = vim.fs.root(0, root_markers)
+  if not root_dir then root_dir = vim.fn.getcwd() end
+
+  local project_name = vim.fn.fnamemodify(root_dir, ':t')
   local workspace_dir = home .. '/.local/share/jdtls-eclipse/' .. project_name -- jdtls will use this to index your project
 
   -- --- OS-specific and Mason path helpers ---
@@ -24,6 +31,8 @@ function M.setup()
     return
   end
 
+  -- --- 2. Dynamically find the configuration directory ---
+  -- should add other configs here
   local os_lookup = {
     Windows_NT = 'win',
     Linux = 'linux',
@@ -33,16 +42,22 @@ function M.setup()
   local key = os_lookup[os_name]
 
   if not key then
-    vim.notify('Unregistered OS' .. tostring(os_name) .. '. JDTLS startup interrupted.', vim.log.levels.ERROR)
+    vim.notify('Unregistered OS: ' .. tostring(os_name) .. '. JDTLS startup interrupted', vim.log.levels.ERROR)
     return
   end
 
-  -- --- 2. Dynamically find the configuration directory ---
   local config_dir_name = 'config_' .. key
   local config_dir = vim.fs.joinpath(jdtls_dir, config_dir_name)
 
+  if not vim.fn.filereadable(config_dir) then
+    vim.notify('Config file directory not valid: ' .. config_dir .. '. JDTLS startup interrupted', vim.log.levels.ERROR)
+    return
+  end
+
   -- --- 3. Find DAP/Test Jars ---
-  -- These are installed by mason-nvim-dap
+  -- These are installed by mason
+  local bundles = {}
+
   local debug_glob = vim.fs.joinpath(
     mason_packages,
     'java-debug-adapter',
@@ -50,24 +65,60 @@ function M.setup()
     'server',
     'com.microsoft.java.debug.plugin-*.jar'
   )
-  local test_glob =
-    vim.fs.joinpath(mason_packages, 'java-test', 'extension', 'server', 'com.microsoft.java.test.plugin-*.jar')
 
   local java_debug_jar = vim.fn.glob(debug_glob, true, true)[1]
-  local java_test_jar = vim.fn.glob(test_glob, true, true)[1]
 
-  local bundles = {}
-  if java_debug_jar then table.insert(bundles, java_debug_jar) end
-  if java_test_jar then table.insert(bundles, java_test_jar) end
+  if java_debug_jar and java_debug_jar ~= '' then
+    table.insert(bundles, java_debug_jar)
+  else
+    vim.notify(
+      'java debug jar was not found. Check your vscode-java-debug installation',
+      vim.log.levels.WARN,
+      { title = ' JDTLS' }
+    )
+  end
 
-  -- --- 4. Define on_attach ---
+  local test_glob = vim.fs.joinpath(mason_packages, 'java-test', 'extension', 'server', '*.jar')
+  local java_test_jars = vim.fn.glob(test_glob, true, true)
+  local excluded = {
+    'com.microsoft.java.test.runner-jar-with-dependencies.jar',
+    'jacocoagent.jar',
+  }
+
+  -- notify if debug/test jars are not found
+  if #java_test_jars > 0 then
+    for _, java_test_jar in ipairs(java_test_jars) do
+      local fname = vim.fn.fnamemodify(java_test_jar, ':t')
+      if not vim.tbl_contains(excluded, fname) then table.insert(bundles, java_test_jar) end
+    end
+  else
+    vim.notify(
+      'java test jars were not found. Check your vscode-java-test installation',
+      vim.log.levels.WARN,
+      { title = ' JDTLS' }
+    )
+  end
+
+  -- --- 4. Find lombok.jar ---
+  local lombok = vim.fs.joinpath(jdtls_dir, 'lombok.jar')
+
+  -- Notify if lombok.jar was not found
+  if not vim.fn.filereadable(lombok) then
+    vim.notify('Could not find lombok.jar in ' .. jdtls_dir .. '. Check your JDTLS installation', vim.log.levels.WARN)
+  end
+
+  -- --- 5. Define on_attach ---
   -- nvim-jdtls needs this to set up DAP
   local on_attach = function(client, bufnr)
-    if vim.bo[bufnr].filetype:match('^dapui') then return end
-    local map = vim.keymap.set
-    map('n', '<leader>jd', "<Cmd>lua require'jdtls'.test_class()<CR>", { desc = 'JDTLS test class' })
-    map('n', '<leader>jt', "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", { desc = 'JDTLS test nearest method' })
     jdtls.setup_dap { hotcodereplace = 'auto' }
+    local dap_ok, jdtls_dap = pcall(require, 'jdtls.dap')
+    if dap_ok then jdtls_dap.setup_dap_main_class_configs() end
+
+    local map = vim.keymap.set
+    local opts = { buffer = bufnr }
+    map('n', '<leader>jtc', function() jdtls.test_class() end, opts)
+    map('n', '<leader>jtm', function() jdtls.test_nearest_method() end, opts)
+    map('n', '<leader>jo', function() jdtls.organize_imports() end, opts)
   end
 
   -- --- Final LSP Config ---
@@ -85,6 +136,7 @@ function M.setup()
       'java.base/java.util=ALL-UNNAMED',
       '--add-opens',
       'java.base/java.lang=ALL-UNNAMED',
+      '-javaagent:' .. lombok,
       '-jar',
       launcher_jar,
       '-configuration',
@@ -92,19 +144,31 @@ function M.setup()
       '-data',
       workspace_dir,
     },
-    root_dir = vim.fs.root(0, { 'gradlew', '.git', 'mvnw', 'pom.xml', '.project' }),
+    root_dir = root_dir,
 
     on_attach = on_attach,
 
     settings = {
       java = {
+        eclipse = { downloadSources = true },
+        maven = { downloadSources = true },
+        implementationsCodeLens = { enabled = true },
+        referencesCodeLens = { enabled = true },
+        references = { enabled = true },
+        signatureHelp = { enabled = true },
         import = { enabled = true },
         rename = { enabled = true },
         configuration = {
+          updateBuildConfiguration = 'interactive',
           runtimes = {
             {
               name = 'JavaSE-25',
               path = '/usr/lib/jvm/java-25-openjdk/',
+            },
+            {
+              name = 'JavaSE-21',
+              path = '/usr/lib/jvm/java-21-openjdk/',
+              default = true,
             },
           },
         },
