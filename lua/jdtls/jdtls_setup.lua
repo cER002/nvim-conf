@@ -1,6 +1,5 @@
 local M = {}
 
--- See `:help vim.lsp.start` for an overview of the supported `config` options.
 function M.setup()
   local jdtls_ok, jdtls = pcall(require, 'jdtls')
   if not jdtls_ok then vim.notify('JDTLS not found', vim.log.levels.ERROR) end
@@ -39,23 +38,23 @@ function M.setup()
     Darwin = 'mac',
   }
 
-  local key = os_lookup[os_name]
+  local os = os_lookup[os_name]
 
-  if not key then
+  if not os then
     vim.notify('Unregistered OS: ' .. tostring(os_name) .. '. JDTLS startup interrupted', vim.log.levels.ERROR)
     return
   end
 
-  local config_dir_name = 'config_' .. key
+  local config_dir_name = 'config_' .. os
   local config_dir = vim.fs.joinpath(jdtls_dir, config_dir_name)
 
-  if not vim.fn.filereadable(config_dir) then
+  if not vim.fn.isdirectory(config_dir) then
     vim.notify('Config file directory not valid: ' .. config_dir .. '. JDTLS startup interrupted', vim.log.levels.ERROR)
     return
   end
 
   -- --- 3. Find DAP/Test Jars ---
-  -- These are installed by mason
+  -- These are installed by Mason
   local bundles = {}
 
   local debug_glob = vim.fs.joinpath(
@@ -150,16 +149,35 @@ function M.setup()
 
     settings = {
       java = {
+        format = {
+          enabled = true,
+          settings = {
+            url = 'ttps://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml',
+          },
+        },
         eclipse = { downloadSources = true },
         maven = { downloadSources = true },
         implementationsCodeLens = { enabled = true },
         referencesCodeLens = { enabled = true },
         references = { enabled = true },
         signatureHelp = { enabled = true },
+        inlayHints = {
+          parameterNames = {
+            enabled = 'all',
+          },
+        },
         import = { enabled = true },
         rename = { enabled = true },
+        saveActions = { organizeImports = true },
+        codeGeneration = {
+          toString = {
+            template = '${object.className}{${member.name()}=${member.value}, ${otherMembers}}',
+          },
+          useBlocks = true,
+        },
         configuration = {
           updateBuildConfiguration = 'interactive',
+          -- ensure java jdk paths are correct
           runtimes = {
             {
               name = 'JavaSE-25',

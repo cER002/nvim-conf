@@ -18,46 +18,29 @@ return {
     opts = {
       ensure_installed = {
         'clangd',
-        'arduino-language-server',
-        'pyright',
+        'arduino_language_server',
+        'basedpyright',
         'ruff',
         'jdtls',
         'lua_ls',
         'stylua',
         'rust_analyzer',
         'hyprls',
-        'bash-language-server',
-        'json-lsp',
+        'bashls',
+        'jsonls',
       },
-      automatic_enable = {
-        exclude = {
-          'jdtls',
-        },
-      },
+      automatic_enable = false,
     },
-    config = function()
-      vim.diagnostic.config {
-        severity_sort = true,
-        virtual_text = {
-          virt_text_pos = 'eol',
-        },
-        signs = {
-          text = {
-            [vim.diagnostic.severity.ERROR] = ' ',
-            [vim.diagnostic.severity.WARN] = ' ',
-            [vim.diagnostic.severity.HINT] = '󰠠 ',
-            [vim.diagnostic.severity.INFO] = ' ',
-          },
-        },
-      }
-    end,
   },
   {
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
       library = {
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+        {
+          { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+          { path = 'LazyVim', words = { 'LazyVim' } },
+        },
       },
     },
   },

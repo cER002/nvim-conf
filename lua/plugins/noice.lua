@@ -1,5 +1,9 @@
 return {
   'folke/noice.nvim',
+  dependencies = {
+    'MunifTanjim/nui.nvim',
+    'rcarriga/nvim-notify',
+  },
   event = 'VeryLazy',
   opts = {
     background_colour = '#000000',
@@ -19,7 +23,7 @@ return {
         enabled = true,
         opts = {
           border = {
-            style = 'single',
+            style = 'rounded',
           },
           size = {
             max_width = 80,
@@ -28,7 +32,12 @@ return {
         },
       },
       signature = {
-        enabled = false,
+        enabled = true,
+        auto_open = {
+          enabled = true,
+          trigger = true,
+          luasnip = true,
+        },
       },
       override = {
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
@@ -43,9 +52,5 @@ return {
       inc_rename = true,
       lsp_doc_border = false,
     },
-  },
-  dependencies = {
-    'MunifTanjim/nui.nvim',
-    'rcarriga/nvim-notify',
   },
 }

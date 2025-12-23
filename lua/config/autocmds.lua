@@ -16,9 +16,8 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- formatting on write, conform.nvim must be loaded before
-local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
-vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
-  group = lint_augroup,
-  callback = function(args) require('conform').format { bufnr = args.buf } end,
+-- Aggressive linting
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+  pattern = '*',
+  callback = function() require('lint').try_lint() end,
 })
