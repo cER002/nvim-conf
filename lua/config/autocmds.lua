@@ -21,3 +21,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
   pattern = '*',
   callback = function() require('lint').try_lint() end,
 })
+
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+  callback = function() vim.lsp.codelens.refresh { bufnr = 0 } end,
+})

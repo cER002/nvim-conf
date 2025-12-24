@@ -7,8 +7,8 @@ return {
       css = { 'prettier' },
       -- java = { 'google_java_format' }, redundant with JDTLS formatting
       python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
-      bash = { 'beautysh' },
-      sh = { 'beautysh' },
+      bash = { 'shfmt' },
+      sh = { 'shfmt' },
       json = { 'prettier' },
       jsonc = { 'prettier' },
       yaml = { 'prettier' },

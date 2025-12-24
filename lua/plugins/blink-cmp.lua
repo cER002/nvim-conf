@@ -15,8 +15,6 @@ return {
         ['<C-j>'] = { 'select_next', 'fallback' },
         ['<C-Space>'] = { 'accept', 'fallback' },
         ['<C-h>'] = { 'show', 'show_documentation', 'hide_documentation', 'fallback' },
-        ['<Tab>'] = { 'select_and_accept', 'snippet_forward', 'fallback' },
-        ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
       },
       cmdline = {
         keymap = { preset = 'inherit' },

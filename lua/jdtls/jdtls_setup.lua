@@ -152,7 +152,7 @@ function M.setup()
         format = {
           enabled = true,
           settings = {
-            url = 'ttps://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml',
+            url = 'https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml',
           },
         },
         eclipse = { downloadSources = true },
