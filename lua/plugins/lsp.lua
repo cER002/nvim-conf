@@ -2,6 +2,8 @@ return {
   { 'neovim/nvim-lspconfig' },
   {
     'mason-org/mason.nvim',
+    ---@module "mason"
+    ---@type MasonSettings
     opts = {
       ui = {
         icons = {
@@ -15,6 +17,8 @@ return {
   {
     'williamboman/mason-lspconfig.nvim',
     dependencies = { 'mason-org/mason.nvim', 'neovim/nvim-lspconfig' },
+    ---@module "mason-lspconfig"
+    ---@type MasonLspconfigSettings
     opts = {
       ensure_installed = {
         'clangd',
@@ -24,10 +28,11 @@ return {
         'jdtls',
         'lua_ls',
         'stylua',
-        'rust_analyzer',
+        -- 'rust_analyzer',
         'hyprls',
         'bashls',
         'jsonls',
+        'yamlls',
       },
       automatic_enable = false,
     },
@@ -35,6 +40,8 @@ return {
   {
     'folke/lazydev.nvim',
     ft = 'lua',
+    ---@module "lazydev"
+    ---@type lazydev.Config
     opts = {
       library = {
         {
@@ -46,15 +53,22 @@ return {
   },
   {
     'mfussenegger/nvim-jdtls',
+    ---@module "jdtls"
     ft = { 'java' },
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
     ft = { 'markdown' },
+    ---@module "render-markdown"
     opts = {
       file_types = { 'markdown', 'copilot-chat' },
       completions = { lsp = { enabled = true } },
     },
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^6',
+    lazy = false,
   },
 }
