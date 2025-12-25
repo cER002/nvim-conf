@@ -1,7 +1,6 @@
 local M = {}
 
 function M.setup()
-  ---@type boolean,table
   local jdtls_ok, jdtls = pcall(require, 'jdtls')
   if not jdtls_ok then vim.notify('JDTLS not found', vim.log.levels.ERROR) end
 
@@ -10,27 +9,21 @@ function M.setup()
 
   -- --- Project-specific workspace ---
   -- get the root dir for the buffer
-  ---@type table[string]
   local root_markers = { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }
   local root_dir = vim.fs.root(0, root_markers)
   if not root_dir then root_dir = vim.fn.getcwd() end
 
-  ---@type string
   local project_name = vim.fn.fnamemodify(root_dir, ':t')
   local workspace_dir = home .. '/.local/share/jdtls-eclipse/' .. project_name -- jdtls will use this to index your project
 
   -- --- OS-specific and Mason path helpers ---
-  ---@type string
   local os_name = vim.uv.os_uname().sysname -- get OS name
-  ---@type string
   local jdtls_dir = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'packages', 'jdtls')
-  ---@type string
   local mason_packages = vim.fs.joinpath(vim.fn.stdpath('data'), 'mason', 'packages')
 
   -- --- 1. Dynamically find the launcher jar ---
-  ---@type string
+
   local launcher_pattern = vim.fs.joinpath(jdtls_dir, 'plugins', 'org.eclipse.equinox.launcher_*.jar')
-  ---@type string?
   local launcher_jar = vim.fn.glob(launcher_pattern, true, true)[1]
 
   -- Check if launcher jar was found properly
@@ -42,7 +35,6 @@ function M.setup()
   -- --- 2. Dynamically find the configuration directory ---
   -- should add other configs here
 
-  ---@type table[string]
   local os_lookup = {
     Windows_NT = 'win',
     Linux = 'linux',
@@ -56,9 +48,7 @@ function M.setup()
     return
   end
 
-  ---@type string
   local config_dir_name = 'config_' .. os
-  ---@type string
   local config_dir = vim.fs.joinpath(jdtls_dir, config_dir_name)
 
   if not vim.fn.isdirectory(config_dir) then
@@ -69,10 +59,8 @@ function M.setup()
   -- --- 3. Find DAP/Test Jars ---
 
   -- These are installed by Mason (or other)
-  ---@type table[string]
   local bundles = {}
 
-  ---@type string
   local debug_glob = vim.fs.joinpath(
     mason_packages,
     'java-debug-adapter',
@@ -81,7 +69,6 @@ function M.setup()
     'com.microsoft.java.debug.plugin-*.jar'
   )
 
-  ---@type string
   local java_debug_jar = vim.fn.glob(debug_glob, true, true)[1]
 
   if java_debug_jar and java_debug_jar ~= '' then
@@ -94,11 +81,8 @@ function M.setup()
     )
   end
 
-  ---@type string
   local test_glob = vim.fs.joinpath(mason_packages, 'java-test', 'extension', 'server', '*.jar')
-  ---@type table[string]
   local java_test_jars = vim.fn.glob(test_glob, true, true)
-  ---@type table[string]
   local excluded = {
     'com.microsoft.java.test.runner-jar-with-dependencies.jar',
     'jacocoagent.jar',
@@ -119,7 +103,7 @@ function M.setup()
   end
 
   -- --- 4. Find lombok.jar ---
-  ---@type string
+
   local lombok = vim.fs.joinpath(jdtls_dir, 'lombok.jar')
 
   -- Notify if lombok.jar was not found
@@ -130,21 +114,17 @@ function M.setup()
   -- --- 5. Define on_attach ---
 
   --- define on_attach behaviour
-  ---@param client any
+  ---@param client vim.lsp.Client
   ---@param bufnr integer
   local on_attach = function(client, bufnr)
     jdtls.setup_dap { hotcodereplace = 'auto' }
-    ---@type boolean,table
     local dap_ok, jdtls_dap = pcall(require, 'jdtls.dap')
     if dap_ok then jdtls_dap.setup_dap_main_class_configs() end
 
-    ---@type vim.keymap.set.Opts
-    local opts = { buffer = bufnr }
-    ---@type function
     local map = vim.keymap.set
-    map('n', '<leader>jtc', function() jdtls.test_class() end, opts)
-    map('n', '<leader>jtm', function() jdtls.test_nearest_method() end, opts)
-    map('n', '<leader>jo', function() jdtls.organize_imports() end, opts)
+    map('n', '<leader>jtc', function() jdtls.test_class() end, { buffer = bufnr, desc = 'Java Test Class' })
+    map('n', '<leader>jtm', function() jdtls.test_nearest_method() end, { buffer = bufnr, desc = 'Java Test Method' })
+    map('n', '<leader>jo', function() jdtls.organize_imports() end, { buffer = bufnr, desc = 'Java Organize Imports' })
   end
 
   -- --- Final LSP Config ---
