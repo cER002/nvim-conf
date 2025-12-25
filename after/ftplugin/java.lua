@@ -1,1 +1,1 @@
-require('jdtls.jdtls_setup').setup()
+require('LSP.jdtls_setup').setup()
