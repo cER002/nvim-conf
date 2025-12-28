@@ -15,6 +15,7 @@ opt.guifont = 'Iosevka Nerd Font' -- GUI font
 opt.fillchars:append { eob = ' ' } -- hide ~ on empty lines
 opt.clipboard = 'unnamedplus' -- use system clipboard
 opt.splitbelow = true -- horiz splits go below
+vim.o.winborder = 'rounded'
 
 -- Indentation -----------------------------------------------------------------
 opt.smartindent = true -- smart autoindenting on new lines

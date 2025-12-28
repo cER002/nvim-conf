@@ -11,7 +11,10 @@ function M.setup()
   -- get the root dir for the buffer
   local root_markers = { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }
   local root_dir = vim.fs.root(0, root_markers)
-  if not root_dir then root_dir = vim.fn.getcwd() end
+  if not root_dir then
+    root_dir = vim.fn.getcwd()
+    vim.notify('Root dir not found. Defaulting to CWD.', vim.log.levels.INFO, { title = ' JDTLS' })
+  end
 
   local project_name = vim.fn.fnamemodify(root_dir, ':t')
   local workspace_dir = home .. '/.local/share/jdtls-eclipse/' .. project_name -- jdtls will use this to index your project

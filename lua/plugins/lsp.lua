@@ -1,11 +1,14 @@
 return {
-  { 'neovim/nvim-lspconfig' },
+  { 'neovim/nvim-lspconfig', event = { 'VeryLazy' } },
   {
     'mason-org/mason.nvim',
+    event = { 'BufNewFile', 'BufReadPre' },
     ---@module "mason"
     ---@type MasonSettings
     opts = {
       ui = {
+        -- backdrop = 100, transparent
+        border = 'rounded',
         icons = {
           package_installed = '✓',
           package_pending = '➜',
@@ -17,22 +20,25 @@ return {
   {
     'williamboman/mason-lspconfig.nvim',
     dependencies = { 'mason-org/mason.nvim', 'neovim/nvim-lspconfig' },
+    event = { 'BufNewFile', 'BufReadPre' },
     ---@module "mason-lspconfig"
     ---@type MasonLspconfigSettings
     opts = {
       ensure_installed = {
         'clangd',
+        -- 'rust_analyzer', use system version
         'arduino_language_server',
         'basedpyright',
         'ruff',
         'jdtls',
         'lua_ls',
         'stylua',
-        -- 'rust_analyzer',
+        'bashls',
         'hyprls',
         'bashls',
         'jsonls',
         'yamlls',
+        'qmlls',
       },
       automatic_enable = false,
     },
@@ -70,5 +76,9 @@ return {
     'mrcjkb/rustaceanvim',
     version = '^6',
     lazy = false,
+  },
+  {
+    'b0o/SchemaStore.nvim',
+    ft = { 'json' },
   },
 }

@@ -1,6 +1,6 @@
 return {
   'altermo/ultimate-autopair.nvim',
-  event = { 'InsertEnter', 'CmdlineEnter' },
+  event = { 'InsertEnter' },
   config = function()
     require('ultimate-autopair').setup {
       fastwarp = {

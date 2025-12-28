@@ -1,77 +1,75 @@
 return {
-  {
-    'saghen/blink.cmp',
-    event = { 'CmdlineEnter', 'InsertEnter' },
-    dependencies = {
-      'rafamadriz/friendly-snippets',
-      'fang2hou/blink-copilot',
-      { 'L3MON4D3/LuaSnip', version = 'v2.*', build = 'make install_jsregexp' },
-    },
-    build = 'cargo build --release',
-    opts = {
-      keymap = {
-        preset = 'none',
-        ['<C-k>'] = { 'select_prev', 'fallback' },
-        ['<C-j>'] = { 'select_next', 'fallback' },
-        ['<C-Space>'] = { 'accept', 'fallback' },
-        ['<C-h>'] = { 'show', 'show_documentation', 'hide_documentation', 'fallback' },
-      },
-      cmdline = {
-        keymap = { preset = 'inherit' },
-        completion = { menu = { auto_show = true } },
-      },
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
-        providers = {
-          lazydev = {
-            name = 'LazyDev',
-            module = 'lazydev.integrations.blink',
-            score_offset = 100,
-          },
-        },
-      },
-      completion = {
-        documentation = {
-          auto_show = false,
-          window = {
-            border = 'single',
-            max_width = 80,
-            max_height = 20,
-            winhighlight = 'Normal:Normal,FloatBorder:FloatBorder',
-          },
-        },
-        list = {
-          selection = {
-            auto_insert = false,
-          },
-        },
-        menu = {
-          border = 'single',
-          direction_priority = function()
-            local ctx = require('blink.cmp').get_context()
-            local item = require('blink.cmp').get_selected_item()
-            if ctx == nil or item == nil then return { 's', 'n' } end
-            local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
-            local is_multi_line = item_text:find('\n') ~= nil
-            if is_multi_line or vim.g.blink_cmp_upwards_ctx_id == ctx.id then
-              vim.g.blink_cmp_upwards_ctx_id = ctx.id
-              return { 'n', 's' }
-            end
-            return { 's', 'n' }
-          end,
-          draw = {
-            columns = {
-              { 'label', 'label_description', gap = 1 },
-              { 'kind_icon', 'kind', gap = 1 },
-            },
-          },
-        },
-        ghost_text = {
-          enabled = true,
-        },
-      },
-      snippets = { preset = 'luasnip' },
-    },
-    opts_extend = { 'sources.default' },
+  ---@module "blink-cmp"
+  'saghen/blink.cmp',
+  event = { 'CmdlineEnter', 'InsertEnter' },
+  dependencies = {
+    'rafamadriz/friendly-snippets',
+    { 'L3MON4D3/LuaSnip', version = 'v2.*', build = 'make install_jsregexp' },
   },
+  build = 'cargo build --release',
+  ---@type blink.cmp.Config
+  opts = {
+    keymap = {
+      preset = 'none',
+      ['<C-k>'] = { 'select_prev', 'fallback' },
+      ['<C-j>'] = { 'select_next', 'fallback' },
+      ['<C-Space>'] = { 'accept', 'fallback' },
+      ['<C-h>'] = { 'show', 'show_documentation', 'hide_documentation', 'fallback' },
+    },
+    cmdline = {
+      keymap = { preset = 'inherit' },
+      completion = {
+        menu = {
+          auto_show = true,
+        },
+      },
+    },
+    appearance = { nerd_font_variant = 'normal' },
+    completion = {
+      keyword = { range = 'prefix' },
+      accept = { auto_brackets = { enabled = false } },
+      list = {
+        selection = {
+          preselect = true,
+          auto_insert = true,
+        },
+      },
+      menu = {
+        border = 'rounded',
+        scrollbar = false,
+        draw = {
+          treesitter = { 'lsp' },
+          columns = {
+            { 'label', 'label_description', gap = 1 },
+            { 'kind_icon', 'kind', gap = 1 },
+          },
+        },
+      },
+      documentation = {
+        auto_show = true,
+        auto_show_delay_ms = 500,
+        window = {
+          border = 'rounded',
+          max_width = 80,
+          max_height = 20,
+        },
+      },
+      ghost_text = {
+        enabled = true,
+      },
+    },
+    snippets = { preset = 'luasnip' },
+    sources = {
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
+      providers = {
+        lazydev = {
+          name = 'LazyDev',
+          module = 'lazydev.integrations.blink',
+          score_offset = 100,
+        },
+      },
+    },
+    fuzzy = { implementation = 'prefer_rust_with_warning', prebuilt_binaries = { download = false } },
+  },
+  opts_extend = { 'sources.default' },
 }

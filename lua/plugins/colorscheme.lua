@@ -1,3 +1,5 @@
+-- local colors = require('config.colors')
+
 return {
   {
     'folke/tokyonight.nvim',
@@ -6,10 +8,13 @@ return {
     opts = {
       transparent = true,
       styles = {
+        comments = { italic = true },
+        keywords = { italic = true },
         sidebars = 'transparent',
         floats = 'transparent',
       },
     },
+    -- on_colors = colors,
   },
   {
     'norcalli/nvim-colorizer.lua',
