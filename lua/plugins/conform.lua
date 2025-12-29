@@ -6,7 +6,7 @@ return {
   opts = {
     formatters_by_ft = {
       lua = { 'stylua' },
-      css = { 'prettier' },
+      -- css = { 'prettier' },
       -- java = { 'google_java_format' }, redundant with JDTLS formatting
       python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
       bash = { 'shfmt' },

@@ -1,4 +1,4 @@
-local colors = require('config.color')
+local colors = require('config.colors')
 local M = {}
 
 M.lualine = {
