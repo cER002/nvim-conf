@@ -1,8 +1,10 @@
 return {
+  ---@module "bufferline"
   'akinsho/bufferline.nvim',
   version = '*',
   dependencies = 'nvim-tree/nvim-web-devicons',
   event = 'VeryLazy',
+  ---@type bufferline.UserConfig
   opts = {
     options = {
       mode = 'buffers',

@@ -1,12 +1,3 @@
--- Open images with feh
-vim.api.nvim_create_autocmd({ 'BufReadCmd' }, {
-  pattern = { '*.png', '*.jpg', '*.jpeg', '*.gif', '*.bmp', '*.webp', '*.svg' },
-  callback = function()
-    vim.fn.jobstart({ 'feh', vim.fn.expand('<afile>:p') }, { detach = true })
-    vim.cmd('bdelete')
-  end,
-})
-
 -- focus on help document
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'help',
@@ -23,6 +14,31 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
 })
 
 -- Refresh CodeLens
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+vim.api.nvim_create_autocmd({ 'BufWritePost', 'InsertLeave' }, {
   callback = function() vim.lsp.codelens.refresh { bufnr = 0 } end,
+})
+
+-- Change buf filetype to systemd for systemd-lsp
+vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+  pattern = {
+    '*.service',
+    '*.socket',
+    '*.timer',
+    '*.mount',
+    '*.automount',
+    '*.swap',
+    '*.target',
+    '*.path',
+    '*.slice',
+    '*.scope',
+    '*.device',
+    '*.container',
+    '*.volume',
+    '*.network',
+    '*.kube',
+    '*.pod',
+    '*.build',
+    '*.image',
+  },
+  callback = function() vim.bo.filetype = 'systemd' end,
 })

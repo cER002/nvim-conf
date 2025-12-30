@@ -50,8 +50,8 @@ return {
         auto_show_delay_ms = 500,
         window = {
           border = 'rounded',
-          max_width = 80,
-          max_height = 20,
+          max_width = 100,
+          max_height = 60,
         },
       },
       ghost_text = {

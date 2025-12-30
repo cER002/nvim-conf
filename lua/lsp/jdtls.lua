@@ -4,7 +4,6 @@ function M.setup()
   local jdtls_ok, jdtls = pcall(require, 'jdtls')
   if not jdtls_ok then vim.notify('JDTLS not found', vim.log.levels.ERROR) end
 
-  ---@type string?
   local home = os.getenv('HOME')
 
   -- --- Project-specific workspace ---
@@ -64,24 +63,14 @@ function M.setup()
   -- These are installed by Mason (or other)
   local bundles = {}
 
-  local debug_glob = vim.fs.joinpath(
-    mason_packages,
-    'java-debug-adapter',
-    'extension',
-    'server',
-    'com.microsoft.java.debug.plugin-*.jar'
-  )
+  local debug_glob = vim.fs.joinpath(mason_packages, 'java-debug-adapter', 'extension', 'server', 'com.microsoft.java.debug.plugin-*.jar')
 
   local java_debug_jar = vim.fn.glob(debug_glob, true, true)[1]
 
   if java_debug_jar and java_debug_jar ~= '' then
     table.insert(bundles, java_debug_jar)
   else
-    vim.notify(
-      'java debug jar was not found. Check your vscode-java-debug installation',
-      vim.log.levels.WARN,
-      { title = ' JDTLS' }
-    )
+    vim.notify('java debug jar was not found. Check your vscode-java-debug installation', vim.log.levels.WARN, { title = ' JDTLS' })
   end
 
   local test_glob = vim.fs.joinpath(mason_packages, 'java-test', 'extension', 'server', '*.jar')
@@ -98,11 +87,7 @@ function M.setup()
       if not vim.tbl_contains(excluded, fname) then table.insert(bundles, java_test_jar) end
     end
   else
-    vim.notify(
-      'java test jars were not found. Check your vscode-java-test installation',
-      vim.log.levels.WARN,
-      { title = ' JDTLS' }
-    )
+    vim.notify('java test jars were not found. Check your vscode-java-test installation', vim.log.levels.WARN, { title = ' JDTLS' })
   end
 
   -- --- 4. Find lombok.jar ---
@@ -117,8 +102,6 @@ function M.setup()
   -- --- 5. Define on_attach ---
 
   --- define on_attach behaviour
-  ---@param client vim.lsp.Client
-  ---@param bufnr integer
   local on_attach = function(client, bufnr)
     jdtls.setup_dap { hotcodereplace = 'auto' }
     local dap_ok, jdtls_dap = pcall(require, 'jdtls.dap')
@@ -131,7 +114,7 @@ function M.setup()
   end
 
   -- --- Final LSP Config ---
-  ---@type vim.lsp.ClientConfig
+  ---@type vim.lsp.Config
   local config = {
     cmd = {
       'java',
