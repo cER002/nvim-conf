@@ -2,7 +2,7 @@ local M = {}
 
 function M.setup()
   local jdtls_ok, jdtls = pcall(require, 'jdtls')
-  if not jdtls_ok then vim.notify('JDTLS not found', vim.log.levels.ERROR) end
+  if not jdtls_ok then vim.notify('JDTLS not found', vim.log.levels.ERROR) return end
 
   local home = os.getenv('HOME')
 
