@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('n', 'gI', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, { desc = 'LSP Toggle Inlay Hints' })
     map('n', '<F2>', vim.lsp.buf.rename, { buffer = event.buf, desc = 'LSP Buffer Rename' })
     map('n', '<F4>', vim.lsp.buf.code_action, { buffer = event.buf, desc = 'LSP Code Action' })
-    map('n', 'g]', function() vim.diagnostic.jump { count = 1, float = true } end, { buffer = event.buf })
-    map('n', 'g[', function() vim.diagnostic.jump { count = -1, float = true } end, { buffer = event.buf })
+    map('n', 'g]', function() vim.diagnostic.jump { count = 1, float = true } end, { buffer = event.buf, desc = 'LSP Next Diagnostic' })
+    map('n', 'g[', function() vim.diagnostic.jump { count = -1, float = true } end, { buffer = event.buf, desc = 'LSP Previous Diagnostic' })
   end,
 })

@@ -7,12 +7,6 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- Aggressive linting
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
-  pattern = '*',
-  callback = function() require('lint').try_lint() end,
-})
-
 -- Refresh CodeLens
 vim.api.nvim_create_autocmd({ 'BufWritePost', 'InsertLeave' }, {
   callback = function() vim.lsp.codelens.refresh { bufnr = 0 } end,
