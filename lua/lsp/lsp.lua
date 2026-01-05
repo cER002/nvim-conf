@@ -7,7 +7,7 @@ return {
     ---@type MasonSettings
     opts = {
       ui = {
-        -- backdrop = 100, transparent
+        backdrop = 100,
         border = 'rounded',
         icons = {
           package_installed = '✓',
@@ -52,10 +52,7 @@ return {
     ---@type lazydev.Config
     opts = {
       library = {
-        {
-          { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-          { path = 'LazyVim', words = { 'LazyVim' } },
-        },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
     },
   },
