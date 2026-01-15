@@ -1,4 +1,4 @@
-local colors = require('config.colors')
+local colors = require('cer.config.colors')
 local M = {}
 
 M.lualine = {
@@ -8,27 +8,27 @@ M.lualine = {
     -- Section B: Git/LSP Status.
     b = { bg = colors.color7, fg = colors.background },
     -- Section C: Status/Line info.
-    c = { bg = colors.background, fg = colors.foreground },
+    c = { bg = colors.none, fg = colors.foreground },
   },
   insert = {
     a = { bg = colors.color8, fg = colors.foreground, gui = 'bold' },
     b = { bg = colors.color7, fg = colors.background },
-    c = { bg = colors.background, fg = colors.foreground },
+    c = { bg = colors.none, fg = colors.foreground },
   },
   visual = {
     a = { bg = colors.color2, fg = colors.foreground, gui = 'bold' },
     b = { bg = colors.color7, fg = colors.background },
-    c = { bg = colors.background, fg = colors.foreground },
+    c = { bg = colors.none, fg = colors.foreground },
   },
   replace = {
     a = { bg = colors.color10, fg = colors.foreground, gui = 'bold' },
     b = { bg = colors.color7, fg = colors.background },
-    c = { bg = colors.background, fg = colors.foreground },
+    c = { bg = colors.none, fg = colors.foreground },
   },
   command = {
     a = { bg = colors.color4, fg = colors.foreground, gui = 'bold' },
     b = { bg = colors.color7, fg = colors.background },
-    c = { bg = colors.background, fg = colors.foreground },
+    c = { bg = colors.none, fg = colors.foreground },
   },
   inactive = {
     a = { bg = colors.inactive_background, fg = colors.inactive_foreground, gui = 'bold' },

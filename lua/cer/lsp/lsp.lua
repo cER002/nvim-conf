@@ -67,7 +67,7 @@ return {
     ft = { 'markdown' },
     ---@module "render-markdown"
     opts = {
-      file_types = { 'markdown', 'copilot-chat' },
+      file_types = { 'markdown' },
       completions = { lsp = { enabled = true } },
     },
   },

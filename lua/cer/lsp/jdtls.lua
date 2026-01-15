@@ -4,7 +4,7 @@ function M.setup()
   ---@module "uv"
   local jdtls_ok, jdtls = pcall(require, 'jdtls')
   if not jdtls_ok then
-    vim.notify('JDTLS not found', vim.log.levels.ERROR)
+    vim.notify('nvim-jdtls not found', vim.log.levels.ERROR)
     return
   end
 
@@ -41,21 +41,12 @@ function M.setup()
   -- --- 2. Dynamically find the configuration directory ---
   -- should add other configs here
 
-  local os_lookup = {
-    Windows_NT = 'win',
-    Linux = 'linux',
-    Darwin = 'mac',
-  }
-
-  local os = os_lookup[os_name]
-
-  if not os then
+  if os_name ~= 'Linux' then
     vim.notify('Unregistered OS: ' .. tostring(os_name) .. '. JDTLS startup interrupted', vim.log.levels.ERROR)
     return
   end
 
-  local config_dir_name = 'config_' .. os
-  local config_dir = vim.fs.joinpath(jdtls_dir, config_dir_name)
+  local config_dir = vim.fs.joinpath(jdtls_dir, 'config_linux')
 
   if not vim.fn.isdirectory(config_dir) then
     vim.notify('Config file directory not valid: ' .. config_dir .. '. JDTLS startup interrupted', vim.log.levels.ERROR)

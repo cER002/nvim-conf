@@ -17,7 +17,8 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup {
   spec = {
     -- import ur plugins
-    { import = 'plugins' },
+    { import = 'cer.plugins' },
+    { import = 'cer.lsp.lsp' },
   },
   install = { colorscheme = { 'habamax' } },
   checker = { enabled = true },

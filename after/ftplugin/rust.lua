@@ -1,2 +1,2 @@
 vim.treesitter.start()
-require('lsp.rust_analyzer').setup()
+require('cer.lsp.rust_analyzer').setup()

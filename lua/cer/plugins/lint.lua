@@ -1,4 +1,5 @@
 return {
+  ---@module "lint"
   'mfussenegger/nvim-lint',
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
@@ -9,11 +10,13 @@ return {
       -- sh = { 'shellcheck' }, -- redundant, bashLS already runs shellcheck if it is available
       c = { 'cpplint' },
       cpp = { 'cpplint' },
+      make = { 'checkmake' },
     }
-
+    -- luacheck
     lint.linters.luacheck.args = { 'vim' }
 
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+    -- Auto linting
+    vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufWritePost', 'InsertLeave' }, {
       pattern = '*',
       callback = function() require('lint').try_lint() end,
     })

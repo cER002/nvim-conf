@@ -1,2 +1,2 @@
 vim.treesitter.start()
-require('lsp.jdtls').setup()
+require('cer.lsp.jdtls').setup()

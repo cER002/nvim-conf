@@ -3,7 +3,7 @@
 return {
   'folke/trouble.nvim',
   config = function()
-    local trouble = require 'trouble'
+    local trouble = require('trouble')
     trouble.setup {
       modes = {
         buffer_diagnostics = {
@@ -64,13 +64,8 @@ return {
       vim.fn.setqflist {}
       trouble.refresh { mode = 'quickfix' }
     end, { desc = 'Clear Quickfix and refresh Trouble' })
-    vim.keymap.set('n', '<leader>tt', function() toggle_exclusive 'diagnostics' end, { desc = 'Trouble diagnostics' })
-    vim.keymap.set(
-      'n',
-      '<leader>tb',
-      function() toggle_exclusive 'buffer_diagnostics' end,
-      { desc = 'Trouble buffer diagnostics' }
-    )
-    vim.keymap.set('n', '<leader>tf', function() toggle_exclusive 'quickfix' end, { desc = 'Toggle Trouble Quickfix' })
+    vim.keymap.set('n', '<leader>tt', function() toggle_exclusive('diagnostics') end, { desc = 'Trouble diagnostics' })
+    vim.keymap.set('n', '<leader>tb', function() toggle_exclusive('buffer_diagnostics') end, { desc = 'Trouble buffer diagnostics' })
+    vim.keymap.set('n', '<leader>tf', function() toggle_exclusive('quickfix') end, { desc = 'Toggle Trouble Quickfix' })
   end,
 }

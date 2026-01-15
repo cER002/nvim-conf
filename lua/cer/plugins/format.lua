@@ -9,15 +9,15 @@ return {
       -- css = { 'prettier' },
       -- java = { 'google_java_format' }, redundant with JDTLS formatting
       python = { 'ruff_fix', 'ruff_organize_imports', 'ruff_format' },
-      bash = { 'shfmt' },
-      sh = { 'shfmt' },
+      -- bash = { 'shfmt' },
+      -- sh = { 'shfmt' },
       json = { 'prettier' },
       jsonc = { 'prettier' },
       yaml = { 'prettier' },
-      toml = { 'taplo' },
       c = { 'clang-format' },
       cpp = { 'clang-format' },
       arduino = { 'clang-format' },
+      asm = { 'asmfmt' },
     },
     formatters = {
       shfmt = {
